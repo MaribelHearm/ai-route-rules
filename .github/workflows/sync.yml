@@ -46,10 +46,4 @@ jobs:
         if: steps.commit.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         env:
           RULES_REPOSITORY: ${{ github.repository }}
-        run: |
-          for name in ai payment accounts; do
-            curl --fail --silent --show-error --retry 3 --max-time 45 \
-              "https://purge.jsdelivr.net/gh/${RULES_REPOSITORY}@main/rules/${name}.yaml" \
-              --output "purge-${name}.json"
-            python -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d.get("success") is True, "CDN purge failed"' "purge-${name}.json"
-          done
+        run: python scripts/purge_cdn.py
