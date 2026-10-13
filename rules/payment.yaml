@@ -1,0 +1,9 @@
+# Public payment services; stripe.com is covered by ai.yaml.
+payload:
+  - DOMAIN-SUFFIX,stripe.network
+  - DOMAIN-SUFFIX,link.com
+  - DOMAIN-SUFFIX,paypal.com
+  - DOMAIN-SUFFIX,paypalobjects.com
+  - DOMAIN-SUFFIX,paddle.com
+  - DOMAIN-SUFFIX,paddle.net
+  - DOMAIN-SUFFIX,lemonsqueezy.com

@@ -1,0 +1,18 @@
+payload:
+  - DOMAIN-SUFFIX,grok.com
+  - DOMAIN-SUFFIX,grok.x.com
+  - DOMAIN-SUFFIX,x.ai
+  - DOMAIN-SUFFIX,apple.com
+  - DOMAIN-SUFFIX,apple.com.cn
+  - DOMAIN-SUFFIX,icloud.com
+  - DOMAIN-SUFFIX,icloud.com.cn
+  - DOMAIN-SUFFIX,itunes.apple.com
+  - DOMAIN-SUFFIX,mzstatic.com
+  - DOMAIN-SUFFIX,google.com
+  - DOMAIN-SUFFIX,googleapis.com
+  - DOMAIN-SUFFIX,gstatic.com
+  - DOMAIN-SUFFIX,ggpht.com
+  - DOMAIN-SUFFIX,googleusercontent.com
+  - DOMAIN-SUFFIX,gvt1.com
+  - DOMAIN-SUFFIX,gvt2.com
+  - DOMAIN-SUFFIX,crashlytics.com
