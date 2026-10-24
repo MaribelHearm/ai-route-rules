@@ -74,6 +74,7 @@ payload:
 - DOMAIN-SUFFIX,algolia.net
 - DOMAIN-SUFFIX,ampcode.com
 - DOMAIN-SUFFIX,ampworkers.com
+- DOMAIN-SUFFIX,ant.dev
 - DOMAIN-SUFFIX,anthropic.com
 - DOMAIN-SUFFIX,anthropic.com.cn
 - DOMAIN-SUFFIX,anthropic.team
@@ -115,6 +116,7 @@ payload:
 - DOMAIN-SUFFIX,claude.dev
 - DOMAIN-SUFFIX,claude.new
 - DOMAIN-SUFFIX,claude.site
+- DOMAIN-SUFFIX,claudeacademy.com
 - DOMAIN-SUFFIX,claudemcpclient.com
 - DOMAIN-SUFFIX,claudemcpcontent.com
 - DOMAIN-SUFFIX,claudepages.dev
