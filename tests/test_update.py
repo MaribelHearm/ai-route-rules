@@ -18,10 +18,16 @@ class Conversion(unittest.TestCase):
             'DOMAIN-KEYWORD,openai','DOMAIN-REGEX,^ai[0-9]+\\.example\\.com$',
             'IP-CIDR,192.0.2.0/24,no-resolve','IP-CIDR6,2001:db8::/32,no-resolve'})
     def test_reject_unknown_and_invalid(self):
-        for rule in [{'port':[443]},{'domain_suffix':['.example.com']},{'domain':['bad,REJECT']},
+        for rule in [{'port':[443]},{'domain':['bad,REJECT']},{'domain_suffix':[f'.bad{i}.example.com' for i in range(6)]},
                      {'ip_cidr':['192.0.2.1/24']},{'domain_regex':['[']},{'domain_regex':['(?=a)a']},{'domain_regex':['a++']},{'domain':'example.com'}]:
             with self.subTest(rule=rule), self.assertRaises((ValueError,TypeError)):
                 u.convert({'version':2,'rules':[rule]})
+    def test_skip_few_invalid_domains(self):
+        data={'version':2,'rules':[{'domain':['api.example.com','Bad.example.com'],
+              'domain_suffix':['example.org','.example.com','//github.com/a/b']}]}
+        with patch('builtins.print') as printed:rules=u.convert(data)
+        self.assertEqual(rules,['DOMAIN,api.example.com','DOMAIN-SUFFIX,example.org'])
+        self.assertEqual(printed.call_count,3)
     def test_go_regex_rejection_keeps_output(self):
         for expression in [r'^example\.com\Z', 'a{1001}', '(a{100}){100}']:
             with self.subTest(expression=expression), tempfile.TemporaryDirectory() as directory:

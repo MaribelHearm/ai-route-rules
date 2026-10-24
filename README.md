@@ -30,7 +30,9 @@ The converter preserves exact domains, suffixes, keywords and regular expression
 IP ranges use `IP-CIDR` / `IP-CIDR6` with `no-resolve`. Upstream process names are
 intentionally excluded: this is a destination list, shared by clients and servers.
 Unknown fields, invalid input, fewer than 200 destination entries, or a loss of
-more than 20% relative to the current file fail before writing. Manual providers
+more than 20% relative to the current file fail before writing. The one exception
+is a malformed domain or suffix: up to 5 are dropped with a workflow warning, so a
+stray upstream entry does not block the whole update; more than 5 still fail. Manual providers
 are not overwritten. `stripe.com` belongs to the AI provider, not the payment
 provider. The global list excludes the upstream domestic AI collection; this
 does not imply that all auxiliary service domains are foreign-owned.

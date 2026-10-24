@@ -12,6 +12,10 @@ import yaml
 
 SOURCE = 'https://raw.githubusercontent.com/VPSDance/ai-proxy-rules/main/rules/sing-box/global.json'
 ROOT = Path(__file__).resolve().parents[1]
+# Upstream occasionally leaks scraper debris, such as the URL fragment that
+# appeared on 2026-10-22. Dropping an entry only narrows the list; many at once
+# means the format changed, so that still fails.
+MAX_SKIPPED_DOMAINS = 5
 
 
 def domain(value):
@@ -27,6 +31,7 @@ def convert(data):
     if not isinstance(data['rules'], list) or not data['rules']:
         raise ValueError('missing rules')
     payload = set()
+    skipped = []
     for rule in data['rules']:
         if not isinstance(rule, dict) or not rule or set(rule) - {
                 'domain', 'domain_suffix', 'domain_keyword', 'domain_regex', 'process_name', 'ip_cidr'}:
@@ -43,8 +48,6 @@ def convert(data):
                 if kind == 'ip_cidr':
                     net = ipaddress.ip_network(value, strict=True)
                     payload.add(f"{'IP-CIDR' if net.version == 4 else 'IP-CIDR6'},{net},no-resolve")
-                elif kind == 'domain':
-                    payload.add('DOMAIN,' + domain(value))
                 elif kind == 'domain_keyword':
                     payload.add('DOMAIN-KEYWORD,' + value)
                 elif kind == 'domain_regex':
@@ -52,7 +55,16 @@ def convert(data):
                 else:
                     # sing-box .example.com means subdomains only. Do not silently
                     # turn that into a suffix rule which also includes the apex.
-                    payload.add('DOMAIN-SUFFIX,' + domain(value))
+                    try:
+                        name = domain(value)
+                    except ValueError:
+                        skipped.append(value)
+                        continue
+                    payload.add(('DOMAIN,' if kind == 'domain' else 'DOMAIN-SUFFIX,') + name)
+    if len(skipped) > MAX_SKIPPED_DOMAINS:
+        raise ValueError('too many invalid domains')
+    for value in skipped:
+        print('::warning::Skipped invalid upstream domain ' + value.replace('%', '%25'))
     expressions = [entry.split(',', 1)[1] for entry in payload if entry.startswith('DOMAIN-REGEX,')]
     # Validate before any write. Use the same regexp implementation as consumers.
     if expressions:
