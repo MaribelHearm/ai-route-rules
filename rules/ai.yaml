@@ -1,5 +1,7 @@
 # Generated from the public global list; see README.md.
 payload:
+- DOMAIN,accounts.meta.com
+- DOMAIN,accountscenter.meta.com
 - DOMAIN,ai.developer.meta.com
 - DOMAIN,ai.meta.com
 - DOMAIN,aidemos.meta.com
@@ -17,6 +19,7 @@ payload:
 - DOMAIN,appsgenaiserver-pa.clients6.google.com
 - DOMAIN,appsgenaiserver-pa.googleapis.com
 - DOMAIN,assets.msn.com
+- DOMAIN,auth.meta.com
 - DOMAIN,aws-language-servers.us-east-1.amazonaws.com
 - DOMAIN,aws-toolkit-language-servers.amazonaws.com
 - DOMAIN,browser-intake-datadoghq.com
@@ -33,6 +36,7 @@ payload:
 - DOMAIN,copilotprodattachments.blob.core.windows.net
 - DOMAIN,daily-cloudcode-pa.googleapis.com
 - DOMAIN,developer.meta.com
+- DOMAIN,gateway.accountscenter.meta.com
 - DOMAIN,gateway.bingviz.microsoft.net
 - DOMAIN,gateway.bingviz.microsoftapp.net
 - DOMAIN,geminiweb-pa.clients.google.com

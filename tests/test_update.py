@@ -41,6 +41,22 @@ class Conversion(unittest.TestCase):
                     with self.assertRaises(ValueError):u.main()
                 self.assertEqual(output.read_text(),'unchanged sentinel')
 
+    def test_daily_generation_preserves_meta_login_hosts(self):
+        import json
+        import yaml
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source.json'; output=Path(directory)/'ai.yaml'
+            source.write_text(json.dumps({'version':2,'rules':[{
+                'domain_suffix':[f'test{i}.example.com' for i in range(220)]}]}))
+            with patch.object(sys,'argv',['update','--source-file',str(source),'--output',str(output)]):
+                u.main(); first=output.read_text(); u.main()
+            self.assertEqual(first,output.read_text())
+            rules=yaml.safe_load(first)['payload']
+            for host in ['auth.meta.com','accounts.meta.com','accountscenter.meta.com','gateway.accountscenter.meta.com']:
+                self.assertIn('DOMAIN,'+host,rules)
+            self.assertNotIn('DOMAIN-SUFFIX,meta.com',rules)
+            self.assertEqual(len(rules),224)
+
     def test_guards(self):
         with self.assertRaises(ValueError):u.validate(list(map(str,range(199))))
         with self.assertRaises(ValueError):u.validate(list(map(str,range(239))),list(range(300)))

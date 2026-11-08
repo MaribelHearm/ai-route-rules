@@ -16,6 +16,13 @@ ROOT = Path(__file__).resolve().parents[1]
 # appeared on 2026-10-22. Dropping an entry only narrows the list; many at once
 # means the format changed, so that still fails.
 MAX_SKIPPED_DOMAINS = 5
+# Meta AI login dependencies observed in production; exact hosts only.
+AI_LOGIN_DOMAINS = (
+    'auth.meta.com',
+    'accounts.meta.com',
+    'accountscenter.meta.com',
+    'gateway.accountscenter.meta.com',
+)
 
 
 def domain(value):
@@ -97,7 +104,7 @@ def main():
         if len(body) > 2 * 1024 * 1024:
             raise ValueError('source too large')
         data = json.loads(body)
-    payload = convert(data)
+    payload = sorted(set(convert(data)) | {'DOMAIN,' + domain(host) for host in AI_LOGIN_DOMAINS})
     previous = yaml.safe_load(args.output.read_text())['payload'] if args.output.exists() else None
     validate(payload, previous)
     content = '# Generated from the public global list; see README.md.\n' + yaml.safe_dump(

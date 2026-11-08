@@ -33,7 +33,10 @@ Unknown fields, invalid input, fewer than 200 destination entries, or a loss of
 more than 20% relative to the current file fail before writing. The one exception
 is a malformed domain or suffix: up to 5 are dropped with a workflow warning, so a
 stray upstream entry does not block the whole update; more than 5 still fail. Manual providers
-are not overwritten. `stripe.com` belongs to the AI provider, not the payment
+are not overwritten. The AI generator also preserves four exact Meta AI login
+hosts: `auth.meta.com`, `accounts.meta.com`, `accountscenter.meta.com`, and
+`gateway.accountscenter.meta.com`. These supplement the upstream AI destinations
+without adding a blanket `meta.com` suffix rule. `stripe.com` belongs to the AI provider, not the payment
 provider. The global list excludes the upstream domestic AI collection; this
 does not imply that all auxiliary service domains are foreign-owned.
 
